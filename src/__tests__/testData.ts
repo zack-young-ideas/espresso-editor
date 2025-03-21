@@ -1,4 +1,4 @@
-import { InlineNode, BlockNode } from '../DocumentClass.ts'
+import { type InlineNode, type BlockNode } from '../DocumentClass.ts'
 
 export const html: string = [
   ,'<h1>Canadian Confederation: The Birth of a Nation</h1>'
