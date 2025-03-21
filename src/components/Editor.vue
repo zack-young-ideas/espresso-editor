@@ -1,16 +1,28 @@
 <script setup lang="ts">
 import { ref, nextTick } from 'vue';
+import { EditorController } from '../controller.ts';
+import { documentObject } from '../__tests__/testData.ts';
 
-const exampleDocument = ref<string>(
-  '<h1>Hello, World!</h1>\n'
-  + '<p>This is some text. It is a paragraph, to be exact.</p>\n'
-  + '<h2>Sub Heading</h2>'
-  + '<p>This another paragraph. Hope you like it.</p>'
-);
+const controller = new EditorController(documentObject, window);
+
+const exampleDocument = ref<string>(controller.html());
+
+/*
+const update = async (event) => {
+  controller.pressKey(event.key);
+  exampleDocument.value = controller.html();
+
+  await nextTick();
+
+  controller.setCaret();
+}
+*/
 
 const update = async (event: Event) => {
   let selection = window.getSelection();
   let node = selection.anchorNode.parentElement;
+  console.log(node);
+
   const editorBlocks = document.getElementById('editor').children;
   let blockNumber: number = 0;
   while (editorBlocks[blockNumber] !== node) {
@@ -22,6 +34,7 @@ const update = async (event: Event) => {
   await nextTick();
 
   node = document.getElementById('editor').children[blockNumber];
+  console.log(node);
   if (selection.rangeCount > 0) {
     selection.removeAllRanges();
   }
@@ -52,6 +65,7 @@ const update = async (event: Event) => {
       id="editor"
       contenteditable="true"
       @keyup="update"
+      @mouseup="click"
       v-html="exampleDocument"
     >
     </div>

@@ -7,10 +7,10 @@ describe('Editor', () => {
   it('renders default document text', async () => {
     const wrapper = mount(Editor);
 
-    const paragraph = await wrapper.findAll('p')[0]
+    const paragraph = await wrapper.find('p');
 
-    expect(paragraph.text()).toBe(
-      'This is some text. It is a paragraph, to be exact.'
+    expect(paragraph.text()).toMatch(
+      'On July 1, 1867, Canada officially became a self-governing'
     );
   });
 });

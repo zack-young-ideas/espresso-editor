@@ -1,26 +1,30 @@
-import { type InlineNode, type BlockNode } from '../DocumentClass.ts'
+/*
+Defines data used to test the models and controller class.
+*/
+
+import { type BlockNodeType } from '../models.ts'
 
 export const html: string = [
   ,'<h1>Canadian Confederation: The Birth of a Nation</h1>'
   ,'<h2>Introduction</h2>'
-  ,'<p>On <bold>July 1, 1867</bold>, Canada officially became a '
+  ,'<p>On <strong>July 1, 1867</strong>, Canada officially became a '
   ,'self-governing dominion within the British Empire through an '
-  ,'agreement known as <bold>Confederation</bold>. This landmark event '
-  ,'united four provinces--<bold>Ontario, Quebec, New Brunswick, and '
-  ,'Nova Scotia</bold>--into a single country called the <bold>Dominion '
-  ,'of Canada</bold>.</p>'
+  ,'agreement known as <strong>Confederation</strong>. This landmark '
+  ,'event united four provinces--<strong>Ontario, Quebec, New Brunswick, '
+  ,'and Nova Scotia</strong>--into a single country called the '
+  ,'<strong>Dominion of Canada</strong>.</p>'
   ,'<img src="example.jpg" alt="Canada" />'
   ,'<h2>Background</h2>'
-  ,'<p>The <bold>Charlottetown Conference</bold> in 1864 was the first '
-  ,'step toward union. Originally intended to discuss the possible '
+  ,'<p>The <strong>Charlottetown Conference</strong> in 1864 was the '
+  ,'first step toward union. Originally intended to discuss the possible '
   ,'unification of the Maritime provinces, the conference expanded after '
-  ,'leaders from Canada joned the talks. This led to the <bold>Quebec '
-  ,'Conference</bold>, where the <i>72 Resolutions</i> were drafted, '
+  ,'leaders from Canada joined the talks. This led to the <strong>Quebec '
+  ,'Conference</strong>, where the <i>72 Resolutions</i> were drafted, '
   ,'outlining the framework for a new nation.</p>'
   ,'<p>Click <a href="example.html">here</a> to learn more.</p>'
 ].join('');
 
-export const documentObject: BlockNode[] = [
+export const documentObject: BlockNodeType[] = [
   {
     type: 'h1',
     children: [
@@ -65,11 +69,14 @@ export const documentObject: BlockNode[] = [
         bold: true,
       },
       {
-        text: '--into a single country called the',
+        text: '--into a single country called the ',
       },
       {
         text: 'Dominion of Canada',
         bold: true,
+      },
+      {
+        text: '.',
       },
     ],
   },
@@ -98,7 +105,7 @@ export const documentObject: BlockNode[] = [
       },
       {
         text: [
-          'in 1864 was the first step toward union. Originally intended '
+          ' in 1864 was the first step toward union. Originally intended '
           ,'to discuss the possible unification of the Maritime provinces, '
           ,'the conference expanded after leaders from Canada joined the '
           ,'talks. This led to the '
@@ -137,7 +144,7 @@ export const documentObject: BlockNode[] = [
         ],
       },
       {
-        text: ' to learn more. ',
+        text: ' to learn more.',
       },
     ],
   },
