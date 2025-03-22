@@ -8,7 +8,7 @@ describe('Editor', () => {
     });
     cy.get('#editor').within(($div) => {
       cy.get('p').eq(0).contains(
-        'This is some text. It is a parinsertagraph, to be exact.'
+        'into a single country called theinsert Dominion of Canada.'
       );
     });
   })

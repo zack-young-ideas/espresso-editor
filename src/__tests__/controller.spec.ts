@@ -19,4 +19,12 @@ describe('EditorController', () => {
 
     expect(controller.html()).toBe(html);
   });
+
+  it('can update anchor and focus', () => {
+    const window = { document: null };
+    const controller = new EditorController(documentObject, window);
+
+    expect(controller.anchor).toStrictEqual({ path: [0, 0], offset: 0});
+    expect(controller.focus).toStrictEqual({ path: [0, 0], offset: 0});
+  });
 });

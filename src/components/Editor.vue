@@ -7,41 +7,13 @@ const controller = new EditorController(documentObject, window);
 
 const exampleDocument = ref<string>(controller.html());
 
-/*
 const update = async (event) => {
-  controller.pressKey(event.key);
+  controller.pressKey(event);
   exampleDocument.value = controller.html();
 
   await nextTick();
 
   controller.setCaret();
-}
-*/
-
-const update = async (event: Event) => {
-  let selection = window.getSelection();
-  let node = selection.anchorNode.parentElement;
-  console.log(node);
-
-  const editorBlocks = document.getElementById('editor').children;
-  let blockNumber: number = 0;
-  while (editorBlocks[blockNumber] !== node) {
-    blockNumber++;
-  }
-  const offset: number = selection.anchorOffset;
-  exampleDocument.value = (event.target as HTMLInputElement).innerHTML;
-
-  await nextTick();
-
-  node = document.getElementById('editor').children[blockNumber];
-  console.log(node);
-  if (selection.rangeCount > 0) {
-    selection.removeAllRanges();
-  }
-  const range = document.createRange();
-  range.setStart(node.childNodes[0], offset);
-  range.setEnd(node.childNodes[0], offset);
-  selection.addRange(range);
 }
 </script>
 
