@@ -4,6 +4,21 @@ Defines the controller class that is used to edit documents.
 
 import { EditorModel } from './models.ts';
 
+type commandTypes = 'text' | 'newBlock';
+
+type Anchor = {
+  path: Number[];
+  offset: Number;
+}
+
+class Command {
+  constructor(type: commandTypes, value: string, anchor: Anchor) {
+    this.type = type;
+    this.value = value;
+    this.anchor = anchor;
+  }
+}
+
 export class EditorController {
   constructor(initialDocument, window) {
     this.window = window;
@@ -11,25 +26,39 @@ export class EditorController {
     this.model = new EditorModel(initialDocument);
     this.anchor = { path: [0, 0], offset: 0 };
     this.focus = { path: [0, 0], offset: 0 };
+    this.pendingCommand = [];
+    this.commandHistory = [];
   }
 
   html() {
     return this.model.html();
   }
 
+  flush() {
+    const newCommand = this.pendingCommand.pop();
+    this.commandHistory.push(newCommand);
+  }
+
   pressKey(event) {
-    // Insert key in current caret position.
+    // Record current caret position.
     this.getSelection();
-    const character = String.fromCharCode(event.which);
-    if (/[a-z\d]/i.test(character)) {
-      const nodes = this.model.nodes[this.anchor.path[0]].children;
-      const text = nodes[this.anchor.path[1]].text;
-      const newText = [
-        text.slice(0, this.anchor.offset - 1),
-        event.key,
-        text.slice(this.anchor.offset - 1),
-      ].join('');
-      nodes[this.anchor.path[1]].text = newText;
+    // Create a new Command in the pendingCommand buffer.
+    if (event.key !== 'Enter') {
+      if (this.pendingCommand.length > 0) {
+        if (event.key === 'Backspace') {
+          this.pendingCommand[0].value += '\u232b';
+        } else {
+          this.pendingCommand[0].value += event.key;
+        }
+      } else {
+        let command;
+        if (event.key === 'Backspace') {
+          command = new Command('text', '\u232b', this.anchor);
+        } else {
+          command = new Command('text', event.key, this.anchor);
+        }
+        this.pendingCommand.push(command);
+      }
     }
   }
 

@@ -7,31 +7,23 @@ const controller = new EditorController(documentObject, window);
 
 const exampleDocument = ref<string>(controller.html());
 
+let timeout;
+
 const update = async (event) => {
+  clearTimeout(timeout);
   controller.pressKey(event);
-  exampleDocument.value = controller.html();
-
-  await nextTick();
-
-  controller.setCaret();
+  timeout = setTimeout(async () => {
+    controller.flush();
+    exampleDocument.value = controller.html();
+    await nextTick();
+    controller.setCaret();
+  }, 2000);
 }
 </script>
 
 <template>
   <div>
-    <div>
-      <ul>
-        <li>
-          <select name="blocks">
-            <option value="heading-1">Heading 1</option>
-            <option value="heading-2">Heading 2</option>
-            <option value="heading-3">Heading 3</option>
-            <option value="heading-4">Heading 4</option>
-            <option value="heading-5">Heading 5</option>
-            <option value="paragraph">Paragraph</option>
-          </select>
-        </li>
-      </ul>
+    <div id="toolbar">
     </div>
     <div
       id="editor"
