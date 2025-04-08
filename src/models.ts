@@ -118,4 +118,8 @@ export class EditorModel {
     }
     return output;
   }
+
+  applyCommand(command) {
+    return;
+  }
 }

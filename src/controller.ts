@@ -2,7 +2,7 @@
 Defines the controller class that is used to edit documents.
 */
 
-import { EditorModel } from './models.ts';
+import { BlockNodeType, EditorModel } from './models.ts';
 
 type commandTypes = 'text' | 'newBlock';
 
@@ -20,7 +20,7 @@ class Command {
 }
 
 export class EditorController {
-  constructor(initialDocument, window) {
+  constructor(initialDocument: BlockNodeType[], window) {
     this.window = window;
     this.document = window.document;
     this.model = new EditorModel(initialDocument);
@@ -37,6 +37,7 @@ export class EditorController {
   flush() {
     const newCommand = this.pendingCommand.pop();
     this.commandHistory.push(newCommand);
+    this.model.applyCommand(newCommand);
   }
 
   pressKey(event) {

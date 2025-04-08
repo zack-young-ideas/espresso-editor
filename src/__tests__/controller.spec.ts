@@ -22,14 +22,26 @@ beforeEach(() => {
 });
 
 describe('EditorController', () => {
-
   it('can render HTML', () => {
     expect(controller.html()).toBe(html);
   });
 
-  it('can update anchor and focus', () => {
+  it('contains anchor and focus', () => {
     expect(controller.anchor).toStrictEqual({ path: [0, 0], offset: 0});
     expect(controller.focus).toStrictEqual({ path: [0, 0], offset: 0});
+  });
+
+  describe('html method', () => {
+    it('calls html method of EditorModel object', () => {
+      controller.model.html = vi.fn();
+
+      expect(controller.model.html).not.toHaveBeenCalled();
+
+      controller.html();
+
+      expect(controller.model.html).toHaveBeenCalledTimes(1);
+      expect(controller.model.html).toHaveBeenCalledWith();
+    });
   });
 
   describe('pressKey method', () => {
@@ -130,13 +142,19 @@ describe('EditorController', () => {
     });
 
     it('applies new command to document object', () => {
-      controller.pendingCommand.push({
+      const command = {
         type: 'text',
         value: 'stuff',
-      });
+      };
+      controller.pendingCommand.push(command);
+      controller.model.applyCommand = vi.fn();
+
+      expect(controller.model.applyCommand).not.toHaveBeenCalled();
+
       controller.flush();
 
-
+      expect(controller.model.applyCommand).toHaveBeenCalledTimes(1);
+      expect(controller.model.applyCommand).toHaveBeenCalledWith(command);
     });
   });
 });
