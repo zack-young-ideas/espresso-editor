@@ -9,14 +9,14 @@ type InlineNodeType = {
   type?: string;
   text?: string;
   url?: string;
-}
+};
 
 export type BlockNodeType = {
   alt?: string;
   type: string;
   children?: InlineNode[];
   src?: string;
-}
+};
 
 class InlineNode {
   /*
@@ -120,6 +120,22 @@ export class EditorModel {
   }
 
   applyCommand(command) {
-    return;
+    if (command.type === 'text') {
+      if (command.value.match('\u232b')) {
+        return;
+      } else {
+        let node = this.nodes[command.anchor.path[0]];
+        let i = 1;
+        while (i < command.anchor.path.length) {
+          node = node.children[command.anchor.path[i]];
+          i++;
+        }
+        node.text = [
+          node.text.slice(0, command.anchor.offset),
+          command.value,
+          node.text.slice(command.anchor.offset)
+        ].join('');
+      }
+    }
   }
 }

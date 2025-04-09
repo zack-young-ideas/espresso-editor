@@ -126,6 +126,7 @@ describe('EditorController', () => {
       controller.pendingCommand.push({
         type: 'text',
         value: 'stuff',
+        anchor: { path: [0, 0], offset: 0 },
       });
 
       expect(controller.commandHistory.length).toBe(0);
@@ -145,6 +146,7 @@ describe('EditorController', () => {
       const command = {
         type: 'text',
         value: 'stuff',
+        anchor: { path: [0, 0], offset: 0 },
       };
       controller.pendingCommand.push(command);
       controller.model.applyCommand = vi.fn();

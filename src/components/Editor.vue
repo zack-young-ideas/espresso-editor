@@ -5,9 +5,8 @@ import { documentObject } from '../__tests__/testData.ts';
 
 const controller = new EditorController(documentObject, window);
 
-const exampleDocument = ref<string>(controller.html());
-
-let timeout;
+let exampleDocument = ref<string>(controller.html());
+let timeout: Number;
 
 const update = async (event) => {
   clearTimeout(timeout);
