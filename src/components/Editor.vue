@@ -16,7 +16,7 @@ const update = async (event) => {
     exampleDocument.value = controller.html();
     await nextTick();
     controller.setCaret();
-  }, 2000);
+  }, 1000);
 }
 </script>
 

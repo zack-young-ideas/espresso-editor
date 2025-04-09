@@ -130,14 +130,13 @@ export class EditorModel {
     for (let i=0; i < command.value.length; i++) {
       const character = command.value[i];
       if (character === '\u232b') {
-        if (offset >= 0) {
+        if (offset > 0) {
           node.text = [
             node.text.slice(0, offset - 1),
             node.text.slice(offset)
           ].join('');
           offset--;
         } else {
-
         }
       } else {
         node.text = [

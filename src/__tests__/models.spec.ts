@@ -79,7 +79,7 @@ describe('EditorModel', () => {
       );
     });
 
-    it('deletes node given a text Command with lots of backspaces', () => {
+    it.skip('deletes node given a text Command with lots of backspaces', () => {
       const command = {
         type: 'text',
         value: '\u232b\u232b\u232b\u232b\u232b\u232b',

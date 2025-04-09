@@ -2,7 +2,7 @@
 Defines the controller class that is used to edit documents.
 */
 
-import { BlockNodeType, EditorModel } from './models.ts';
+import { EditorModel } from './models.ts';
 
 type commandTypes = 'text' | 'newBlock';
 
@@ -20,7 +20,7 @@ class Command {
 }
 
 export class EditorController {
-  constructor(initialDocument: BlockNodeType[], window) {
+  constructor(initialDocument, window) {
     this.window = window;
     this.document = window.document;
     this.model = new EditorModel(initialDocument);
@@ -54,9 +54,25 @@ export class EditorController {
       } else {
         let command;
         if (event.key === 'Backspace') {
-          command = new Command('text', '\u232b', this.anchor);
+          command = new Command(
+            'text',
+            '\u232b',
+            // When the Backspace key is pressed, the window.selection
+            // object will record the new anchor position. We want the
+            // anchor position before the key was pressed, so we
+            // add 1.
+            { ...this.anchor, offset: this.anchor.offset + 1 },
+          );
         } else {
-          command = new Command('text', event.key, this.anchor);
+          command = new Command(
+            'text',
+            event.key,
+            // When a character key is pressed, the window.selection
+            // object will record the new anchor position. We want the
+            // anchor position before the key was pressed, so we
+            // subtract 1.
+            { ...this.anchor, offset: this.anchor.offset - 1 },
+          );
         }
         this.pendingCommand.push(command);
       }
