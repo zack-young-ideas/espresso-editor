@@ -120,21 +120,32 @@ export class EditorModel {
   }
 
   applyCommand(command) {
-    if (command.type === 'text') {
-      if (command.value.match('\u232b')) {
-        return;
-      } else {
-        let node = this.nodes[command.anchor.path[0]];
-        let i = 1;
-        while (i < command.anchor.path.length) {
-          node = node.children[command.anchor.path[i]];
-          i++;
+    let node = this.nodes[command.anchor.path[0]];
+    let i = 1;
+    while (i < command.anchor.path.length) {
+      node = node.children[command.anchor.path[i]];
+      i++;
+    }
+    let offset: Number = command.anchor.offset;
+    for (let i=0; i < command.value.length; i++) {
+      const character = command.value[i];
+      if (character === '\u232b') {
+        if (offset >= 0) {
+          node.text = [
+            node.text.slice(0, offset - 1),
+            node.text.slice(offset)
+          ].join('');
+          offset--;
+        } else {
+
         }
+      } else {
         node.text = [
-          node.text.slice(0, command.anchor.offset),
-          command.value,
-          node.text.slice(command.anchor.offset)
+          node.text.slice(0, offset),
+          character,
+          node.text.slice(offset)
         ].join('');
+        offset++;
       }
     }
   }
